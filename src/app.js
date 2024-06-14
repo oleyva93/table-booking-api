@@ -12,6 +12,15 @@ app.use(bodyParser.json());
 app.use(routes);
 
 app.listen(PORT, () => {
-  swaggerDocs(app, PORT);
+  swaggerDocs(app, {
+    port: PORT,
+    schema: "main",
+    endpoint: "docs",
+  });
+  swaggerDocs(app, {
+    port: PORT,
+    schema: "chatbot",
+    endpoint: "chatbot-docs",
+  });
   console.log(`Server is running on http://localhost:${PORT}`);
 });

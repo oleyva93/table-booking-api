@@ -4,50 +4,65 @@ This system facilitates restaurant management and booking operations, including 
 
 ## Database Schema
 
-	
-	"User": {
-		"firstName": "String",
-		"lastName": "String",
-		"email": "String",
-		"phone": "String",
-		"password": "String",
-		"role": "admin/owner/client"
-	},
-	"Restaurant": {
-		"name": "String",
-		"address": "String",
-		"description": "String",
-		"admin": ["User ObjectId"],
-		"verified": "Boolean",
-		"businessHours": {
-			"Sunday": {
-				"start": "String", // e.g., "09:00"
-				"end": "String"    // e.g., "17:00"
-			},
-			"Monday": {
-				"start": "String",
-				"end": "String"
-			},
-			// ... other days
-			}
-	},
-	"Table": {
-		"restaurant": "ObjectId",
-		"tableIdentifier": "String",  // eg Table No 12
-		"capacity": "Number",
-		"description": "String"
-	},
-	"Booking": {
-		"restaurant": "ObjectId",
-		"tables": ["Table ObjectId"],
-		"noOfPersons": "Integer",
-		"bookingFrom": "DateTime",
-		"bookingTo": "DateTime",
-		"customer": "User ObjectId",
-		"bookingStatus": "pending/confirmed/canceled",
-		"bookingStatusUpdatedBy": "customer/owner"
-	}
-
+```json	
+{
+  User: {
+    firstName: "String",
+    lastName: "String",
+    email: "String",
+    phone: "String",
+    password: "String",
+    role: "admin/owner/client",
+  },
+  Restaurant: {
+    name: "String",
+    address: "String",
+    description: "String",
+    admin: ["User ObjectId"],
+    verified: "Boolean",
+    services: {
+      Sunday: {
+        breakfast: ["String", "String"], // e.g., ["09:00", "11:00"]
+        lunch: ["String", "String"],
+        dinner: ["String", "String"],
+      },
+      Monday: {
+        breakfast: ["String", "String"], // e.g., ["09:00", "11:00"]
+        lunch: ["String", "String"],
+        dinner: ["String", "String"],
+      },
+      // ... other days
+    },
+    businessHours: {
+      Sunday: {
+        start: "String", // e.g., "09:00"
+        end: "String", // e.g., "17:00"
+      },
+      Monday: {
+        start: "String",
+        end: "String",
+      },
+      // ... other days
+    },
+  },
+  Table: {
+    restaurant: "ObjectId",
+    tableIdentifier: "String", // eg Table No 12
+    capacity: "Number",
+    description: "String",
+  },
+  Booking: {
+    restaurant: "ObjectId",
+    tables: ["Table ObjectId"],
+    noOfPersons: "Integer",
+    bookingFrom: "DateTime",
+    bookingTo: "DateTime",
+    customer: "User ObjectId",
+    bookingStatus: "pending/confirmed/canceled",
+    bookingStatusUpdatedBy: "customer/owner",
+  },
+}
+```
 
 each collection will have _id by default
 
