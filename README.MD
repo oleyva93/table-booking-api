@@ -252,6 +252,14 @@ each collection will have _id by default
       ```
     - Parameters: `restaurantId`
 
+18. **Get User Bookings**
+    - **POST** `/user/:userId/bookings`
+    - Parameters: 
+       - `userId` - required
+       - `booking_status`
+       - `booking_form_gt`
+       - `booking_to_lt`
+
 
 ### Authentication Endpoints
 
