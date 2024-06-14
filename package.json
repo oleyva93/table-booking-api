@@ -1,0 +1,21 @@
+{
+  "name": "table-booking-system",
+  "version": "0.0.1",
+  "description": "This system facilitates restaurant management and booking operations, including user roles, table availability, and reservation processing",
+  "type": "module",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "start": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "-",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}

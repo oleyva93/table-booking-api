@@ -1,0 +1,6 @@
+node_modules
+temp*
+*.swp
+*.txt
+.DS_Store
+.package-lock.json
