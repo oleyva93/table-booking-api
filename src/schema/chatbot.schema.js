@@ -5,17 +5,17 @@
  *     User:
  *       type: object
  *       required:
- *         - firstName
- *         - lastName
+ *         - first_name
+ *         - last_name
  *         - email
  *         - phone
  *         - password
  *         - role
  *       properties:
- *         firstName:
+ *         first_name:
  *          type: string
  *          default: Jane
- *         lastName:
+ *         last_name:
  *          type: string
  *          default: Doe
  *         email:
@@ -32,6 +32,12 @@
  *           default: user
  *     Restaurant:
  *      type: object
+ *      required:
+ *       - name
+ *       - address
+ *       - admin
+ *       - business_hours
+ *       - services
  *      properties:
  *        name:
  *          type: string
@@ -50,7 +56,7 @@
  *        verified:
  *          type: boolean
  *          default: false
- *        businessHours:
+ *        business_hours:
  *          type: object
  *          properties:
  *           Sunday:
@@ -71,13 +77,27 @@
  *               end:
  *                 type: string
  *                 example: "17:00"
+ *        services:
+ *          type: object
+ *          properties:
+ *           Sunday:
+ *             type: array
+ *             items:
+ *              type: string
+ *           Monday:
+ *             type: array
+ *             items:
+ *              type: string
  *     Table:
  *      type: object
+ *      required:
+ *        - restaurant_id
+ *        - table_identifier
  *      properties:
- *        restaurant:
+ *        restaurant_id:
  *          type: string
  *          format: ObjectId
- *        tableIdentifier:
+ *        table_identifier:
  *          type: string
  *          description: eg Table No 12
  *        capacity:
@@ -88,8 +108,13 @@
  *          default: Table Description
  *     Booking:
  *      type: object
+ *      required:
+ *       - restaurant_id
+ *       - booking_from
+ *       - booking_to
+ *       - client_id
  *      properties:
- *        restaurant:
+ *        restaurant_id:
  *          type: string
  *          format: ObjectId
  *        tables:
@@ -97,27 +122,27 @@
  *          items:
  *            type: string
  *            format: ObjectId
- *        noOfPersons:
+ *        no_of_persons:
  *          type: integer
  *          default: 4
- *        bookingFrom:
+ *        booking_from:
  *          type: string
  *          default: "2022-01-01T00:00:00.000Z"
  *          format: date-time
- *        bookingTo:
+ *        booking_to:
  *          type: string
  *          default: "2022-01-01T00:00:00.000Z"
  *          format: date-time
- *        customer:
+ *        client_id:
  *          type: string
  *          format: ObjectId
- *        bookingStatus:
+ *        booking_status:
  *          type: string
  *          enum:
  *            - pending
  *            - confirmed
  *            - canceled
- *        bookingStatusUpdatedBy:
+ *        booking_status_updated_by:
  *          type: string
  *          enum:
  *            - customer
@@ -169,18 +194,19 @@
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [booking_from, booking_to]
  *             properties:
- *               bookingFrom:
+ *               booking_from:
  *                 type: string
  *                 format: date-time
  *                 example: "2023-05-20T18:00:00Z"
  *                 required: true
- *               bookingTo:
+ *               booking_to:
  *                 type: string
  *                 format: date-time
  *                 example: "2023-05-20T20:00:00Z"
  *                 required: true
- *               noOfPersons:
+ *               no_of_persons:
  *                 type: integer
  *                 example: 4
  *     responses:
@@ -202,7 +228,7 @@
  *                       _id:
  *                         type: string
  *                         example: "60a7b2c6c25e2b001f9e4b2c"
- *                       tableIdentifier:
+ *                       table_identifier:
  *                         type: string
  *                         example: "Table No 12"
  *                       capacity:
@@ -233,8 +259,21 @@
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [client_first_name, client_last_name, client_email, client_phone, restaurant_id, booking_from, booking_to, client_id]
  *             properties:
- *               restaurant:
+ *               client_first_name:
+ *                type: string
+ *                example: "Jane"
+ *               client_last_name:
+ *                type: string
+ *                example: "Doe"
+ *               client_email:
+ *                 type: string
+ *                 example: "jane@mail.com"
+ *               client_phone:
+ *                 type: string
+ *                 example: "1234567890"
+ *               restaurant_id:
  *                 type: string
  *                 example: "60a7b2c6c25e2b001f9e4b2b"
  *                 required: true
@@ -243,31 +282,23 @@
  *                 items:
  *                   type: string
  *                   example: "60a7b2c6c25e2b001f9e4b2c"
- *               noOfPersons:
+ *               no_of_persons:
  *                 type: integer
  *                 example: 4
- *               bookingFrom:
+ *               booking_from:
  *                 type: string
  *                 format: date-time
  *                 example: "2023-05-20T18:00:00Z"
  *                 required: true
- *               bookingTo:
+ *               booking_to:
  *                 type: string
  *                 format: date-time
  *                 example: "2023-05-20T20:00:00Z"
  *                 required: true
- *               customer:
- *                 type: string
- *                 example: "60a7b2c6c25e2b001f9e4b2d"
- *                 required: true
- *               bookingStatus:
+ *               booking_status:
  *                 type: string
  *                 enum: [pending, confirmed, canceled]
  *                 example: "pending"
- *               bookingStatusUpdatedBy:
- *                 type: string
- *                 enum: [customer, owner]
- *                 example: "customer"
  *     responses:
  *       '201':
  *         description: Booking created successfully
@@ -276,15 +307,51 @@
  *             schema:
  *               type: object
  *               properties:
- *                 message:
+ *                  id:
  *                   type: string
- *                   example: Booking created successfully
- *                 booking:
- *                   type: object
- *                   properties:
- *                     _id:
- *                       type: string
- *                       example: "60a7b2c6c25e2b001f9e4b2b"
+ *                   example: "60a7b2c6c25e2b001f9e4b2b"
+ *                  client_first_name:
+ *                   type: string
+ *                   example: "Jane"
+ *                  client_last_name:
+ *                   type: string
+ *                   example: "Doe"
+ *                  client_email:
+ *                    type: string
+ *                    example: "jane@mail.com"
+ *                  client_phone:
+ *                    type: string
+ *                    example: "1234567890"
+ *                  restaurant_id:
+ *                    type: string
+ *                    example: "60a7b2c6c25e2b001f9e4b2b"
+ *                    required: true
+ *                  tables:
+ *                    type: array
+ *                    items:
+ *                      type: string
+ *                      example: "60a7b2c6c25e2b001f9e4b2c"
+ *                  no_of_persons:
+ *                    type: integer
+ *                    example: 4
+ *                  booking_from:
+ *                    type: string
+ *                    format: date-time
+ *                    example: "2023-05-20T18:00:00Z"
+ *                    required: true
+ *                  booking_to:
+ *                    type: string
+ *                    format: date-time
+ *                    example: "2023-05-20T20:00:00Z"
+ *                    required: true
+ *                  client_id:
+ *                    type: string
+ *                    example: "60a7b2c6c25e2b001f9e4b2d"
+ *                    required: true
+ *                  booking_status:
+ *                    type: string
+ *                    enum: [pending, confirmed, canceled]
+ *                    example: "pending"
  *       '400':
  *         description: Bad request, invalid input data
  *       '500':
@@ -359,10 +426,10 @@
  *                   items:
  *                    type: object
  *                    properties:
- *                      _id:
+ *                      id:
  *                       type: string
  *                       example: "60a7b2c6c25e2b001f9e4b2b"
- *                      restaurant:
+ *                      restaurant_id:
  *                       type: string
  *                       example: "60a7b2c6c25e2b001f9e4b2b"
  *                      tables:
@@ -371,77 +438,32 @@
  *                       items:
  *                        type: string
  *                        format: ObjectId
- *                      noOfPersons:
+ *                      no_of_persons:
  *                        type: integer
  *                        default: 4
- *                      bookingFrom:
+ *                      booking_from:
  *                        type: string
  *                        default: "2022-01-01T00:00:00.000Z"
  *                        format: date-time
- *                      bookingTo:
+ *                      booking_to:
  *                        type: string
  *                        default: "2022-01-01T00:00:00.000Z"
  *                        format: date-time
- *                      customer:
+ *                      client_id:
  *                        type: string
  *                        example: "60a7b2c6c25e2b001f9e4b2d"
  *                        format: ObjectId
- *                      bookingStatus:
+ *                      booking_status:
  *                        type: string
  *                        enum:
  *                         - pending
  *                         - confirmed
  *                         - canceled
- *                      bookingStatusUpdatedBy:
+ *                      booking_status_updated_by:
  *                        type: string
  *                        enum:
  *                         - customer
  *                         - owner
- *       '400':
- *         description: Bad request, invalid input data
- *       '500':
- *         description: Internal server error
- */
-
-/**
- * @swagger
- * /client:
- *   post:
- *     tags:
- *      - Clients
- *     summary: Create a new client
- *     description: Endpoint to create a new user.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               firstName:
- *                 type: string
- *                 required: true
- *               lastName:
- *                 type: string
- *                 required: true
- *               email:
- *                 type: string
- *                 format: email
- *                 required: true
- *               phone:
- *                 type: string
- *                 required: true
- *     responses:
- *       '200':
- *         description: User created successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: User created successfully
  *       '400':
  *         description: Bad request, invalid input data
  *       '500':

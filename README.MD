@@ -6,13 +6,14 @@ This system facilitates restaurant management and booking operations, including 
 
 ```json	
 {
+  {
   "User": {
-    "firstName": "String",
-    "lastName": "String",
+    "first_name": "String",
+    "last_name": "String",
     "email": "String",
     "phone": "String",
     "password": "String",
-    "role": "admin/owner/client",
+    "role": "admin/owner/client"
   },
   "Restaurant": {
     "name": "String",
@@ -24,43 +25,43 @@ This system facilitates restaurant management and booking operations, including 
       "Sunday": {
         "breakfast": ["String", "String"], // e.g., ["09:00", "11:00"]
         "lunch": ["String", "String"],
-        "dinner": ["String", "String"],
+        "dinner": ["String", "String"]
       },
       "Monday": {
         "breakfast": ["String", "String"], // e.g., ["09:00", "11:00"]
         "lunch": ["String", "String"],
-        "dinner": ["String", "String"],
+        "dinner": ["String", "String"]
       },
       // ... other days
     },
-    "businessHours": {
+    "business_hours": {
       "Sunday": {
         "start": "String", // e.g., "09:00"
-        "end": "String", // e.g., "17:00"
+        "end": "String" // e.g., "17:00"
       },
       "Monday": {
         "start": "String",
-        "end": "String",
+        "end": "String"
       },
       // ... other days
-    },
+    }
   },
   "Table": {
-    "restaurantId": "ObjectId",
-    "tableIdentifier": "String | Number", // eg Table No 12
+    "restaurant_id": "ObjectId",
+    "table_identifier": "String | Number", // eg Table No 12
     "capacity": "Number",
-    "description": "String",
+    "description": "String"
   },
   "Booking": {
     "restaurant": "ObjectId",
     "tables": ["Table ObjectId"],
-    "noOfPersons": "Integer",
-    "bookingFrom": "DateTime",
-    "bookingTo": "DateTime",
-    "customerId": "User ObjectId",
-    "bookingStatus": "pending/confirmed/canceled",
-    "bookingStatusUpdatedBy": "customer/owner",
-  },
+    "no_of_persons": "Integer",
+    "booking_from": "DateTime",
+    "booking_to": "DateTime",
+    "customer_id": "User ObjectId",
+    "booking_status": "pending/confirmed/canceled",
+    "booking_status_updated_by": "customer/owner"
+  }
 }
 ```
 
@@ -70,20 +71,8 @@ each collection will have _id by default
 
 ## Clients
 
-1. **Create a new client**
-   - **POST** `/client`
-   - Input data:
-     ```json
-     {
-       "firstName": "John",
-       "lastName": "Doe",
-       "email": "john.doe@example.com",
-       "phone": "1234567890",
-     }
-     ```
-
-  2. **Get Client Bookings**
-- **POST** `/client/:clientId/bookings`
+  1. **Get Client Bookings**
+- **POST** `/client/:client_id/bookings`
 - Parameters:  
     - `clientId` - required
     - `booking_status`
@@ -93,57 +82,61 @@ each collection will have _id by default
 ## Bookings
 
 17. **Check table availability**
-    - **POST** `/restaurants/:restaurantId/availability`
+    - **POST** `/restaurants/:restaurant_id/availability`
     - Input data:
       ```json
       {
-        "bookingFrom": "2023-05-20T18:00:00Z",
-        "bookingTo": "2023-05-20T20:00:00Z",
-        "noOfPersons": 4
+        "booking_from": "2023-05-20T18:00:00Z",
+        "booking_to": "2023-05-20T20:00:00Z",
+        "no_of_persons": 4
       }
       ```
-    - Parameters: `restaurantId`
+    - Parameters: `restaurant_id`
 
 13. **Create a new booking**
     - **POST** `/bookings`
     - Input data:
       ```json
       {
-        "restaurantId": "60a7b2c6c25e2b001f9e4b2b",
+        "client_first_name": "Jane",
+        "client_last_name": "Doe",
+        "client_email": "jane@mail.com",
+        "client_phone": "1234567890",
+        "restaurant_id": "60a7b2c6c25e2b001f9e4b2b",
         "tables": ["60a7b2c6c25e2b001f9e4b2c"],
-        "noOfPersons": 4,
-        "bookingFrom": "2023-05-20T18:00:00Z",
-        "bookingTo": "2023-05-20T20:00:00Z",
-        "customerId": "60a7b2c6c25e2b001f9e4b2d",
-        "bookingStatus": "pending",
-        "bookingStatusUpdatedBy": "customer"
+        "no_of_persons": 4,
+        "booking_from": "2023-05-20T18:00:00Z",
+        "booking_to": "2023-05-20T20:00:00Z",
+        "customer_id": "60a7b2c6c25e2b001f9e4b2d",
+        "booking_status": "pending",
+        "booking_status_updated_by": "customer"
       }
       ```
 
 14. **Get booking information**
-    - **GET** `/bookings/:bookingId`
-    - Parameters: `bookingId`
+    - **GET** `/bookings/:booking_id`
+    - Parameters: `booking_id`
 
 15. **Update booking information**
     - **PUT** `/bookings/:bookingId`
     - Input data:
       ```json
       {
-        "restaurantId": "60a7b2c6c25e2b001f9e4b2b",
+        "restaurant_id": "60a7b2c6c25e2b001f9e4b2b",
         "tables": ["60a7b2c6c25e2b001f9e4b2c"],
-        "noOfPersons": 4,
-        "bookingFrom": "2023-05-20T18:00:00Z",
-        "bookingTo": "2023-05-20T20:00:00Z",
-        "customerId": "60a7b2c6c25e2b001f9e4b2d",
-        "bookingStatus": "confirmed",
-        "bookingStatusUpdatedBy": "owner"
+        "no_of_persons": 4,
+        "booking_from": "2023-05-20T18:00:00Z",
+        "booking_to": "2023-05-20T20:00:00Z",
+        "customer_id": "60a7b2c6c25e2b001f9e4b2d",
+        "booking_status": "pending",
+        "booking_status_updated_by": "customer"
       }
       ```
-    - Parameters: `bookingId`
+    - Parameters: `booking_id`
 
 16. **Delete a booking**
-    - **DELETE** `/bookings/:bookingId`
-    - Parameters: `bookingId`
+    - **DELETE** `/bookings/:booking_id`
+    - Parameters: `booking_id`
 
 ## Restaurants
 
@@ -157,7 +150,7 @@ each collection will have _id by default
        "description": "A great place to dine.",
        "admin": ["60a7b2c6c25e2b001f9e4b2b"],
        "verified": true,
-       "businessHours": {
+       "business_hours": {
          "Sunday": { "start": "09:00", "end": "22:00" },
          "Monday": { "start": "09:00", "end": "22:00" },
          "Tuesday": { "start": "09:00", "end": "22:00" },
@@ -165,16 +158,29 @@ each collection will have _id by default
          "Thursday": { "start": "09:00", "end": "22:00" },
          "Friday": { "start": "09:00", "end": "22:00" },
          "Saturday": { "start": "09:00", "end": "22:00" }
-       }
+       },
+       "services": {
+        "Sunday": {
+         "breakfast": ["09:00", "11:00"], 
+          "lunch": ["14:00", "16:00"],
+          "dinner": ["20:00", "22:00"]
+        },
+        "Monday": {
+          "breakfast": ["09:00", "11:00"],
+          "lunch": ["14:00", "16:00"],
+          "dinner": ["20:00", "22:00"]
+        },
+        ///...
+      },
      }
      ```
 
 6. **Get restaurant information**
-   - **GET** `/restaurants/:restaurantId`
-   - Parameters: `restaurantId`
+   - **GET** `/restaurants/:restaurant_id`
+   - Parameters: `restaurant_id`
 
 7. **Update restaurant information**
-   - **PUT** `/restaurants/:restaurantId`
+   - **PUT** `/restaurants/:restaurant_id`
    - Input data:
      ```json
      {
@@ -183,7 +189,7 @@ each collection will have _id by default
        "description": "An updated description.",
        "admin": ["60a7b2c6c25e2b001f9e4b2b"],
        "verified": false,
-       "businessHours": {
+       "business_hours": {
          "Sunday": { "start": "10:00", "end": "23:00" },
          "Monday": { "start": "10:00", "end": "23:00" },
          "Tuesday": { "start": "10:00", "end": "23:00" },
@@ -194,11 +200,11 @@ each collection will have _id by default
        }
      }
      ```
-   - Parameters: `restaurantId`
+   - Parameters: `restaurant_id`
 
 8. **Delete a restaurant**
-   - **DELETE** `/restaurants/:restaurantId`
-   - Parameters: `restaurantId`
+   - **DELETE** `/restaurants/:restaurant_id`
+   - Parameters: `restaurant_id`
 
 ## Tables
 
@@ -208,57 +214,57 @@ each collection will have _id by default
      ```json
      {
        "restaurant": "60a7b2c6c25e2b001f9e4b2b",
-       "tableIdentifier": 12,
+       "table_identifier": 12,
        "capacity": 4,
        "description": "Near the window"
      }
      ```
 
 10. **Get table information**
-    - **GET** `/tables/:tableId`
-    - Parameters: `tableId`
+    - **GET** `/tables/:table_id`
+    - Parameters: `table_id`
 
 11. **Update table information**
-    - **PUT** `/tables/:tableId`
+    - **PUT** `/tables/:table_id`
     - Input data:
       ```json
       {
-        "restaurant": "60a7b2c6c25e2b001f9e4b2b",
-        "tableIdentifier": 13,
+        "restaurant_id": "60a7b2c6c25e2b001f9e4b2b",
+        "table_identifier": 13,
         "capacity": 6,
         "description": "Near the window, updated"
       }
       ```
-    - Parameters: `tableId`
+    - Parameters: `table_id`
 
 12. **Delete a table**
-    - **DELETE** `/tables/:tableId`
-    - Parameters: `tableId`
+    - **DELETE** `/tables/:table_id`
+    - Parameters: `table_id`
 
 ## Users
 
 2. **Get user information**
-   - **GET** `/users/:userId`
-   - Parameters: `userId`
+   - **GET** `/users/:user_id`
+   - Parameters: `user_id`
 
 3. **Update user information**
-   - **PUT** `/users/:userId`
+   - **PUT** `/users/:user_id`
    - Input data:
      ```json
      {
-       "firstName": "John",
-       "lastName": "Doe",
+       "firs_name": "John",
+       "last_name": "Doe",
        "email": "john.doe@example.com",
        "phone": "0987654321",
        "password": "newpassword",
        "role": "client"
      }
      ```
-   - Parameters: `userId`
+   - Parameters: `user_id`
 
 4. **Delete a user**
-   - **DELETE** `/users/:userId`
-   - Parameters: `userId`
+   - **DELETE** `/users/:user_id`
+   - Parameters: `user_id`
 
 ### Authentication Endpoints
 
@@ -268,8 +274,8 @@ each collection will have _id by default
   - Request Body (JSON):
     ```json
     {
-      "firstName": "John",
-      "lastName": "Doe",
+      "firs_name": "John",
+      "last_name": "Doe",
       "email": "john.doe@example.com",
       "phone": "+1234567890",
       "password": "password123",
@@ -291,8 +297,8 @@ each collection will have _id by default
   - Response: Authentication token or error details (JSON)
   ```json
    {
-     "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-     "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+     "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
    }
 	```
 
