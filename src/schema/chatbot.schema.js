@@ -127,7 +127,6 @@
 /**
 /////////////////////// Categories ///////////////////////
 
-
 /**
  * @swagger
  * tags:
@@ -137,7 +136,21 @@
 
 /**
  * @swagger
- * /restaurants/{restaurantId}/availability:
+ * tags:
+ *   name: Clients
+ *   description: Endpoints related to client management
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Restaurants
+ *   description: Endpoints related to restaurant management
+ */
+
+/**
+ * @swagger
+ * /restaurants/{restaurant_id}/availability:
  *   post:
  *     tags:
  *      - Restaurants
@@ -145,7 +158,7 @@
  *     description: Endpoint to check table availability for booking within a specified time range.
  *     parameters:
  *       - in: path
- *         name: restaurantId
+ *         name: restaurant_id
  *         required: true
  *         schema:
  *           type: string
@@ -161,10 +174,12 @@
  *                 type: string
  *                 format: date-time
  *                 example: "2023-05-20T18:00:00Z"
+ *                 required: true
  *               bookingTo:
  *                 type: string
  *                 format: date-time
  *                 example: "2023-05-20T20:00:00Z"
+ *                 required: true
  *               noOfPersons:
  *                 type: integer
  *                 example: 4
@@ -222,6 +237,7 @@
  *               restaurant:
  *                 type: string
  *                 example: "60a7b2c6c25e2b001f9e4b2b"
+ *                 required: true
  *               tables:
  *                 type: array
  *                 items:
@@ -234,13 +250,16 @@
  *                 type: string
  *                 format: date-time
  *                 example: "2023-05-20T18:00:00Z"
+ *                 required: true
  *               bookingTo:
  *                 type: string
  *                 format: date-time
  *                 example: "2023-05-20T20:00:00Z"
+ *                 required: true
  *               customer:
  *                 type: string
  *                 example: "60a7b2c6c25e2b001f9e4b2d"
+ *                 required: true
  *               bookingStatus:
  *                 type: string
  *                 enum: [pending, confirmed, canceled]
@@ -274,7 +293,7 @@
 
 /**
  * @swagger
- * /bookings/{bookingId}:
+ * /bookings/{booking_id}:
  *   delete:
  *     tags:
  *      - Bookings
@@ -282,7 +301,7 @@
  *     description: Endpoint to delete a booking by bookingId.
  *     parameters:
  *       - in: path
- *         name: bookingId
+ *         name: booking_id
  *         required: true
  *         schema:
  *           type: string
@@ -298,13 +317,18 @@
 
 /**
  * @swagger
- * /user/{userId}/bookings:
+ * /client/{client_id}/bookings:
  *   get:
  *     tags:
- *      - Users
+ *      - Clients
  *     summary: Get user bookings
  *     description: Endpoint to get bookings of a user by userId.
  *     parameters:
+ *      - in: parameter
+ *        name: client_id
+ *        required: true
+ *        schema:
+ *         type: string
  *      - in: query
  *        name: booking_status
  *        required: false
@@ -381,11 +405,11 @@
 
 /**
  * @swagger
- * /users:
+ * /client:
  *   post:
  *     tags:
- *      - Users
- *     summary: Create a new user
+ *      - Clients
+ *     summary: Create a new client
  *     description: Endpoint to create a new user.
  *     requestBody:
  *       required: true
@@ -396,20 +420,17 @@
  *             properties:
  *               firstName:
  *                 type: string
+ *                 required: true
  *               lastName:
  *                 type: string
+ *                 required: true
  *               email:
  *                 type: string
  *                 format: email
+ *                 required: true
  *               phone:
  *                 type: string
- *               role:
- *                 type: string
- *                 default: client
- *                 enum:
- *                   - admin
- *                   - owner
- *                   - client
+ *                 required: true
  *     responses:
  *       '200':
  *         description: User created successfully

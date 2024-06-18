@@ -46,8 +46,8 @@ This system facilitates restaurant management and booking operations, including 
     },
   },
   "Table": {
-    "restaurant": "ObjectId",
-    "tableIdentifier": "String", // eg Table No 12
+    "restaurantId": "ObjectId",
+    "tableIdentifier": "String | Number", // eg Table No 12
     "capacity": "Number",
     "description": "String",
   },
@@ -57,7 +57,7 @@ This system facilitates restaurant management and booking operations, including 
     "noOfPersons": "Integer",
     "bookingFrom": "DateTime",
     "bookingTo": "DateTime",
-    "customer": "User ObjectId",
+    "customerId": "User ObjectId",
     "bookingStatus": "pending/confirmed/canceled",
     "bookingStatusUpdatedBy": "customer/owner",
   },
@@ -68,10 +68,10 @@ each collection will have _id by default
 
 # API Endpoints
 
-## Users
+## Clients
 
-1. **Create a new user**
-   - **POST** `/users`
+1. **Create a new client**
+   - **POST** `/client`
    - Input data:
      ```json
      {
@@ -79,33 +79,71 @@ each collection will have _id by default
        "lastName": "Doe",
        "email": "john.doe@example.com",
        "phone": "1234567890",
-       "password": "securepassword",
-       "role": "client"
      }
      ```
 
-2. **Get user information**
-   - **GET** `/users/:userId`
-   - Parameters: `userId`
+  2. **Get Client Bookings**
+- **POST** `/client/:clientId/bookings`
+- Parameters:  
+    - `clientId` - required
+    - `booking_status`
+    - `booking_form_gt`
+    - `booking_to_lt`
 
-3. **Update user information**
-   - **PUT** `/users/:userId`
-   - Input data:
-     ```json
-     {
-       "firstName": "John",
-       "lastName": "Doe",
-       "email": "john.doe@example.com",
-       "phone": "0987654321",
-       "password": "newpassword",
-       "role": "client"
-     }
-     ```
-   - Parameters: `userId`
+## Bookings
 
-4. **Delete a user**
-   - **DELETE** `/users/:userId`
-   - Parameters: `userId`
+17. **Check table availability**
+    - **POST** `/restaurants/:restaurantId/availability`
+    - Input data:
+      ```json
+      {
+        "bookingFrom": "2023-05-20T18:00:00Z",
+        "bookingTo": "2023-05-20T20:00:00Z",
+        "noOfPersons": 4
+      }
+      ```
+    - Parameters: `restaurantId`
+
+13. **Create a new booking**
+    - **POST** `/bookings`
+    - Input data:
+      ```json
+      {
+        "restaurantId": "60a7b2c6c25e2b001f9e4b2b",
+        "tables": ["60a7b2c6c25e2b001f9e4b2c"],
+        "noOfPersons": 4,
+        "bookingFrom": "2023-05-20T18:00:00Z",
+        "bookingTo": "2023-05-20T20:00:00Z",
+        "customerId": "60a7b2c6c25e2b001f9e4b2d",
+        "bookingStatus": "pending",
+        "bookingStatusUpdatedBy": "customer"
+      }
+      ```
+
+14. **Get booking information**
+    - **GET** `/bookings/:bookingId`
+    - Parameters: `bookingId`
+
+15. **Update booking information**
+    - **PUT** `/bookings/:bookingId`
+    - Input data:
+      ```json
+      {
+        "restaurantId": "60a7b2c6c25e2b001f9e4b2b",
+        "tables": ["60a7b2c6c25e2b001f9e4b2c"],
+        "noOfPersons": 4,
+        "bookingFrom": "2023-05-20T18:00:00Z",
+        "bookingTo": "2023-05-20T20:00:00Z",
+        "customerId": "60a7b2c6c25e2b001f9e4b2d",
+        "bookingStatus": "confirmed",
+        "bookingStatusUpdatedBy": "owner"
+      }
+      ```
+    - Parameters: `bookingId`
+
+16. **Delete a booking**
+    - **DELETE** `/bookings/:bookingId`
+    - Parameters: `bookingId`
 
 ## Restaurants
 
@@ -197,69 +235,30 @@ each collection will have _id by default
     - **DELETE** `/tables/:tableId`
     - Parameters: `tableId`
 
-## Bookings
+## Users
 
-13. **Create a new booking**
-    - **POST** `/bookings`
-    - Input data:
-      ```json
-      {
-        "restaurant": "60a7b2c6c25e2b001f9e4b2b",
-        "tables": ["60a7b2c6c25e2b001f9e4b2c"],
-        "noOfPersons": 4,
-        "bookingFrom": "2023-05-20T18:00:00Z",
-        "bookingTo": "2023-05-20T20:00:00Z",
-        "customer": "60a7b2c6c25e2b001f9e4b2d",
-        "bookingStatus": "pending",
-        "bookingStatusUpdatedBy": "customer"
-      }
-      ```
+2. **Get user information**
+   - **GET** `/users/:userId`
+   - Parameters: `userId`
 
-14. **Get booking information**
-    - **GET** `/bookings/:bookingId`
-    - Parameters: `bookingId`
+3. **Update user information**
+   - **PUT** `/users/:userId`
+   - Input data:
+     ```json
+     {
+       "firstName": "John",
+       "lastName": "Doe",
+       "email": "john.doe@example.com",
+       "phone": "0987654321",
+       "password": "newpassword",
+       "role": "client"
+     }
+     ```
+   - Parameters: `userId`
 
-15. **Update booking information**
-    - **PUT** `/bookings/:bookingId`
-    - Input data:
-      ```json
-      {
-        "restaurant": "60a7b2c6c25e2b001f9e4b2b",
-        "tables": ["60a7b2c6c25e2b001f9e4b2c"],
-        "noOfPersons": 4,
-        "bookingFrom": "2023-05-20T18:00:00Z",
-        "bookingTo": "2023-05-20T20:00:00Z",
-        "customer": "60a7b2c6c25e2b001f9e4b2d",
-        "bookingStatus": "confirmed",
-        "bookingStatusUpdatedBy": "owner"
-      }
-      ```
-    - Parameters: `bookingId`
-
-16. **Delete a booking**
-    - **DELETE** `/bookings/:bookingId`
-    - Parameters: `bookingId`
-
-17. **Check table availability**
-    - **POST** `/restaurants/:restaurantId/availability`
-    - Input data:
-      ```json
-      {
-        "bookingFrom": "2023-05-20T18:00:00Z",
-        "bookingTo": "2023-05-20T20:00:00Z",
-        "noOfPersons": 4
-      }
-      ```
-    - Parameters: `restaurantId`
-
-18. **Get User Bookings**
-    - **POST** `/user/:userId/bookings`
-    - Parameters: 
-       - `userId` - required
-       - `booking_status`
-       - `booking_form_gt`
-       - `booking_to_lt`
-
+4. **Delete a user**
+   - **DELETE** `/users/:userId`
+   - Parameters: `userId`
 
 ### Authentication Endpoints
 
@@ -302,3 +301,6 @@ each collection will have _id by default
   - Description: Logs out the currently authenticated user.
   - Request Headers: Authorization token.
   - Response: Success message or error details.
+
+
+
