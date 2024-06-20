@@ -74,7 +74,7 @@ each collection will have _id by default
   1. **Get Client Bookings**
 - **POST** `/client/:client_id/bookings`
 - Parameters:  
-    - `clientId` - required
+    - `client_id` - required
     - `booking_status`
     - `booking_form_gt`
     - `booking_to_lt`
