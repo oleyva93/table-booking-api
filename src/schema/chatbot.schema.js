@@ -259,7 +259,7 @@
  *         application/json:
  *           schema:
  *             type: object
- *             required: [client_first_name, client_last_name, client_email, client_phone, no_of_persons, restaurant_id, booking_from]
+ *             required: [client_first_name, client_last_name, client_phone, no_of_persons, restaurant_id, booking_from]
  *             properties:
  *               client_first_name:
  *                type: string
@@ -363,7 +363,7 @@
 
 /**
  * @swagger
- * /bookings/{booking_id}:
+ * /bookings/{id}:
  *   delete:
  *     tags:
  *      - Bookings
@@ -371,7 +371,7 @@
  *     description: Endpoint to delete a booking by bookingId.
  *     parameters:
  *       - in: path
- *         name: booking_id
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
